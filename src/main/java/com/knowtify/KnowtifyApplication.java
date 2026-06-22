@@ -21,7 +21,7 @@ public class KnowtifyApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:8080", "http://127.0.0.1:8080")
+                        .allowedOrigins("http://localhost:8080", "http://127.0.0.1:8080", "https://knowtify-bb7d.onrender.com")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
