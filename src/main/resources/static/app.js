@@ -281,67 +281,90 @@ async function savePreferencesModal() {
 
 // Onboarding
 async function completeOnboarding() {
-    const domains = Array.from(document.querySelectorAll('.domain-checkbox input:checked'))
-        .map(input => input.value);
-
-    const notificationTime = document.getElementById('notificationTime').value;
-    const notificationFrequency = document.getElementById('notificationFrequency').value;
-
-    if (domains.length === 0) {
-        showToast('Please select at least one domain');
-        return;
-    }
-
     showLoading(true);
 
     try {
-        console.log('Saving preferences with domains:', domains);
+        // Step 1: Get selected domains
+        console.log('Step 1: Getting selected domains...');
+        const domainCheckboxes = document.querySelectorAll('.domain-checkbox input:checked');
+        console.log('Found checkboxes:', domainCheckboxes.length);
 
-        const response = await fetch(`${API_BASE}/user/${appState.currentUser.userId}/preferences`, {
+        const domains = [];
+        domainCheckboxes.forEach(checkbox => {
+            const value = checkbox.value;
+            console.log('Selected domain:', value);
+            domains.push(value);
+        });
+
+        if (domains.length === 0) {
+            showToast('⚠️ Please select at least one domain');
+            showLoading(false);
+            return;
+        }
+
+        console.log('✅ Domains selected:', domains);
+
+        // Step 2: Get notification settings
+        const notificationTime = document.getElementById('notificationTime')?.value || '12:00';
+        const notificationFrequency = document.getElementById('notificationFrequency')?.value || 'daily';
+        console.log('Notification Time:', notificationTime, 'Frequency:', notificationFrequency);
+
+        // Step 3: Save to backend
+        console.log('Step 2: Saving to server...');
+        const userId = appState.currentUser?.userId || appState.currentUser?.id;
+        console.log('User ID:', userId);
+
+        const response = await fetch(`${API_BASE}/user/${userId}/preferences`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                domains: domains,  // Send as array
+                domains: domains,
                 notificationTime: notificationTime,
                 notificationFrequency: notificationFrequency,
             }),
         });
 
-        if (response.ok) {
-            const updatedUser = await response.json();
-            appState.currentUser = updatedUser;
+        console.log('API Response Status:', response.status);
 
-            // Ensure domains is always an array
-            appState.userDomains = Array.isArray(updatedUser.preferredDomains) ? updatedUser.preferredDomains : domains;
-            console.log('Updated domains:', appState.userDomains, 'Type:', typeof appState.userDomains);
-
-            // IMPORTANT: Save to localStorage FIRST to ensure data persists
-            const userId = appState.currentUser.userId || appState.currentUser.id;
-            localStorage.setItem('userDomains_' + userId, JSON.stringify(appState.userDomains));
-            localStorage.setItem('knowtifyUser', JSON.stringify(appState.currentUser));
-            localStorage.setItem('authTimestamp_' + userId, new Date().getTime().toString());
-
-            console.log('✅ Data saved to localStorage. Domains:', localStorage.getItem('userDomains_' + userId));
-            console.log('✅ User saved:', localStorage.getItem('knowtifyUser') ? 'YES' : 'NO');
-            console.log('Preferences saved. User domains:', appState.userDomains);
-            showToast(`✅ Perfect! You'll get cards from: ${appState.userDomains.join(', ')}`);
-
-            // Wait a bit longer to ensure localStorage is written
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Now navigate
-            console.log('Navigating to dashboard...');
-            navigateTo('dashboard');
-            await loadDashboard();
-        } else {
-            const errorData = await response.json().catch(() => ({}));
-            console.error('Preferences error:', errorData);
-            showToast('Error: ' + (errorData.message || errorData.error || 'Failed to save preferences'));
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server Error:', errorText);
+            showToast('❌ Failed to save preferences. Please try again.');
+            showLoading(false);
+            return;
         }
+
+        // Step 4: Parse and save response
+        const updatedUser = await response.json();
+        console.log('✅ Server response received:', updatedUser);
+
+        // Step 5: Update app state
+        appState.currentUser = updatedUser;
+        appState.userDomains = domains;
+        console.log('✅ App state updated');
+
+        // Step 6: Save to localStorage
+        const localUserId = updatedUser.userId || updatedUser.id;
+        localStorage.setItem('knowtifyUser', JSON.stringify(updatedUser));
+        localStorage.setItem('userDomains_' + localUserId, JSON.stringify(domains));
+        console.log('✅ Saved to localStorage');
+
+        // Step 7: Show success message
+        showToast(`✅ Great! Learning from: ${domains.join(', ')}`);
+        showLoading(false);
+
+        // Step 8: Navigate to dashboard
+        console.log('Step 3: Navigating to dashboard...');
+        navigateTo('dashboard');
+
+        // Step 9: Load dashboard content
+        console.log('Step 4: Loading dashboard...');
+        await loadDashboard();
+        console.log('✅ Onboarding complete!');
+
     } catch (error) {
-        console.error('Onboarding error:', error);
-        showToast('Error: ' + error.message);
-    } finally {
+        console.error('❌ Onboarding error:', error.message, error.stack);
+        showToast('❌ Error: ' + error.message);
         showLoading(false);
     }
 }
