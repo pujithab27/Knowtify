@@ -104,8 +104,17 @@ async function handleLogin(event) {
             console.log('User logged in:', appState.currentUser);
             localStorage.setItem('knowtifyUser', JSON.stringify(data));
             showToast('Login successful!');
-            navigateTo('dashboard');
-            loadDashboard();
+
+            // Check if user has selected domains
+            if (data.preferredDomains && data.preferredDomains.length > 0) {
+                appState.userDomains = Array.from(data.preferredDomains);
+                localStorage.setItem('userDomains_' + data.userId, JSON.stringify(appState.userDomains));
+                navigateTo('dashboard');
+                loadDashboard();
+            } else {
+                // No domains selected - show onboarding
+                navigateTo('onboarding');
+            }
         } else {
             showToast(data.message || 'Login failed');
         }
