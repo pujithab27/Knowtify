@@ -298,32 +298,50 @@ async function completeOnboarding() {
     const notificationTime = document.getElementById('notificationTime')?.value || '12:00';
     const notificationFrequency = document.getElementById('notificationFrequency')?.value || 'daily';
 
-    // IMPORTANT: Save to localStorage FIRST (don't wait for API)
-    appState.userDomains = domains;
-    localStorage.setItem('userDomains_' + userId, JSON.stringify(domains));
-    localStorage.setItem('knowtifyUser', JSON.stringify(appState.currentUser));
+    try {
+        // IMPORTANT: Save to localStorage FIRST (don't wait for API)
+        appState.userDomains = domains;
+        localStorage.setItem('userDomains_' + userId, JSON.stringify(domains));
+        localStorage.setItem('knowtifyUser', JSON.stringify(appState.currentUser));
 
-    showToast(`✅ Ready! You'll learn from: ${domains.join(', ')}`);
+        console.log('✅ Saved to localStorage:', domains);
 
-    // THEN navigate to dashboard immediately
-    navigateTo('dashboard');
-    showLoading(false);
+        // Hide ALL pages first
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
-    // ASYNC: Save to backend in the background (don't wait for it)
-    fetch(`${API_BASE}/user/${userId}/preferences`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            domains: domains,
-            notificationTime: notificationTime,
-            notificationFrequency: notificationFrequency,
-        }),
-    }).then(r => {
-        if (r.ok) {
-            console.log('✅ Preferences saved to server');
-            loadDashboard(); // Update dashboard with server data
+        // Show ONLY dashboard
+        const dashboardPage = document.getElementById('dashboardPage');
+        if (dashboardPage) {
+            dashboardPage.classList.add('active');
+            console.log('✅ Dashboard page shown');
         }
-    }).catch(e => console.warn('Could not save to server:', e));
+
+        // Show navbar
+        const navbar = document.querySelector('.navbar');
+        if (navbar) navbar.style.display = 'block';
+
+        showToast(`✅ Ready! You'll learn from: ${domains.join(', ')}`);
+        showLoading(false);
+
+        // Load dashboard content
+        setTimeout(() => loadDashboard(), 100);
+
+        // ASYNC: Save to backend in the background (non-blocking)
+        fetch(`${API_BASE}/user/${userId}/preferences`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                domains: domains,
+                notificationTime: notificationTime,
+                notificationFrequency: notificationFrequency,
+            }),
+        }).catch(e => console.warn('Server save failed (non-blocking):', e));
+
+    } catch (error) {
+        console.error('Onboarding error:', error);
+        showToast('❌ Error: ' + error.message);
+        showLoading(false);
+    }
 }
 
 // Dashboard
