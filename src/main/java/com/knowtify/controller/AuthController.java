@@ -31,10 +31,11 @@ public class AuthController {
                     user.getUsername(),
                     user.getEmail(),
                     user.getFullName(),
-                    "User registered successfully"
+                    "User registered successfully",
+                    user.getPreferredDomains() != null ? user.getPreferredDomains() : java.util.List.of()
             ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(null, null, null, null, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(null, null, null, null, e.getMessage(), null));
         }
     }
 
@@ -56,10 +57,11 @@ public class AuthController {
                     user.getUsername(),
                     user.getEmail(),
                     user.getFullName(),
-                    "Login successful"
+                    "Login successful",
+                    user.getPreferredDomains() != null ? user.getPreferredDomains() : java.util.List.of()
             ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, null, null, null, e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, null, null, null, e.getMessage(), null));
         }
     }
 
@@ -71,8 +73,9 @@ public class AuthController {
                         user.getUsername(),
                         user.getEmail(),
                         user.getFullName(),
-                        "User found"
+                        "User found",
+                        user.getPreferredDomains() != null ? user.getPreferredDomains() : java.util.List.of()
                 )))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AuthResponse(null, null, null, null, "User not found")));
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AuthResponse(null, null, null, null, "User not found", null)));
     }
 }
