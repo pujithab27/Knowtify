@@ -8,6 +8,7 @@ C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\service\UserProgr
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\service\TopicService.java
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\repository\DomainRepository.java
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\service\KnowledgeService.java
+C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\util\NotificationScheduler.java
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\controller\UserController.java
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\util\DataInitializer.java
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\entity\UserProgress.java
@@ -24,4 +25,5 @@ C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\repository\TopicR
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\dto\RegisterRequest.java
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\KnowtifyApplication.java
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\service\DomainService.java
+C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\service\EmailService.java
 C:\Users\pujit\Knowtify_application\src\main\java\com\knowtify\dto\PreferencesRequest.java

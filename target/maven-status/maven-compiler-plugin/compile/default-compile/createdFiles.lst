@@ -17,6 +17,8 @@ com\knowtify\entity\User.class
 com\knowtify\controller\TopicController.class
 com\knowtify\dto\LoginRequest.class
 com\knowtify\dto\RegisterRequest.class
+com\knowtify\util\NotificationScheduler.class
+com\knowtify\service\EmailService.class
 com\knowtify\service\TopicService.class
 com\knowtify\repository\TopicRepository.class
 com\knowtify\service\KnowledgeService.class

@@ -69,6 +69,12 @@
             <version>2.10.1</version>
         </dependency>
 
+        <!-- Spring Mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!-- HTTP Client for API calls -->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>

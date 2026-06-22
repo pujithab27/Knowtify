@@ -8,7 +8,7 @@ let appState = {
     cardStartTime: 0,
 };
 
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = 'https://knowtify-bb7d.onrender.com/api';
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
@@ -104,8 +104,17 @@ async function handleLogin(event) {
             console.log('User logged in:', appState.currentUser);
             localStorage.setItem('knowtifyUser', JSON.stringify(data));
             showToast('Login successful!');
-            navigateTo('dashboard');
-            loadDashboard();
+
+            // Check if user has selected domains
+            if (data.preferredDomains && data.preferredDomains.length > 0) {
+                appState.userDomains = Array.from(data.preferredDomains);
+                localStorage.setItem('userDomains_' + data.userId, JSON.stringify(appState.userDomains));
+                navigateTo('dashboard');
+                loadDashboard();
+            } else {
+                // No domains selected - show onboarding
+                navigateTo('onboarding');
+            }
         } else {
             showToast(data.message || 'Login failed');
         }
@@ -301,20 +310,22 @@ async function completeOnboarding() {
         if (response.ok) {
             const updatedUser = await response.json();
             appState.currentUser = updatedUser;
-            appState.userDomains = domains;
+            appState.userDomains = updatedUser.preferredDomains || domains;
 
             // Save to localStorage
-            localStorage.setItem('userDomains_' + appState.currentUser.userId, JSON.stringify(domains));
+            localStorage.setItem('userDomains_' + appState.currentUser.userId, JSON.stringify(appState.userDomains));
             localStorage.setItem('knowtifyUser', JSON.stringify(appState.currentUser));
 
             console.log('Preferences saved. User domains:', appState.userDomains);
-            showToast(`✅ Perfect! You'll get cards from: ${domains.join(', ')}`);
+            showToast(`✅ Perfect! You'll get cards from: ${appState.userDomains.join(', ')}`);
 
             await new Promise(resolve => setTimeout(resolve, 500));
             navigateTo('dashboard');
             loadDashboard();
         } else {
-            showToast('Error saving preferences');
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Preferences error:', errorData);
+            showToast('Error: ' + (errorData.message || errorData.error || 'Failed to save preferences'));
         }
     } catch (error) {
         console.error('Onboarding error:', error);
