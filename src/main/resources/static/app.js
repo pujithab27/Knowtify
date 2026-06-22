@@ -103,7 +103,6 @@ async function handleLogin(event) {
             appState.currentUser = data;
             console.log('User logged in:', appState.currentUser);
             localStorage.setItem('knowtifyUser', JSON.stringify(data));
-            showToast('Login successful!');
 
             // Check if user has selected domains
             if (data.preferredDomains && data.preferredDomains.length > 0) {
