@@ -310,20 +310,22 @@ async function completeOnboarding() {
         if (response.ok) {
             const updatedUser = await response.json();
             appState.currentUser = updatedUser;
-            appState.userDomains = domains;
+            appState.userDomains = updatedUser.preferredDomains || domains;
 
             // Save to localStorage
-            localStorage.setItem('userDomains_' + appState.currentUser.userId, JSON.stringify(domains));
+            localStorage.setItem('userDomains_' + appState.currentUser.userId, JSON.stringify(appState.userDomains));
             localStorage.setItem('knowtifyUser', JSON.stringify(appState.currentUser));
 
             console.log('Preferences saved. User domains:', appState.userDomains);
-            showToast(`✅ Perfect! You'll get cards from: ${domains.join(', ')}`);
+            showToast(`✅ Perfect! You'll get cards from: ${appState.userDomains.join(', ')}`);
 
             await new Promise(resolve => setTimeout(resolve, 500));
             navigateTo('dashboard');
             loadDashboard();
         } else {
-            showToast('Error saving preferences');
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Preferences error:', errorData);
+            showToast('Error: ' + (errorData.message || errorData.error || 'Failed to save preferences'));
         }
     } catch (error) {
         console.error('Onboarding error:', error);
