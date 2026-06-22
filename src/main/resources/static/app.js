@@ -8,7 +8,7 @@ let appState = {
     cardStartTime: 0,
 };
 
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = 'https://knowtify-bb7d.onrender.com/api';
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
