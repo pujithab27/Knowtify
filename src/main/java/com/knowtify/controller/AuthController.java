@@ -32,10 +32,10 @@ public class AuthController {
                     user.getEmail(),
                     user.getFullName(),
                     "User registered successfully",
-                    user.getPreferredDomains() != null ? user.getPreferredDomains() : java.util.List.of()
+                    user.getPreferredDomains() != null ? new java.util.ArrayList<>(user.getPreferredDomains()) : java.util.List.of()
             ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(null, null, null, null, e.getMessage(), null));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponse(null, null, null, null, e.getMessage(), java.util.List.of()));
         }
     }
 
@@ -47,7 +47,7 @@ public class AuthController {
 
             // Simple password check (in production, use bcrypt)
             if (!user.getPassword().equals(request.getPassword())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, null, null, null, "Invalid credentials"));
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, null, null, null, "Invalid credentials", java.util.List.of()));
             }
 
             userService.updateLastActivityTime(user.getId());
@@ -58,10 +58,10 @@ public class AuthController {
                     user.getEmail(),
                     user.getFullName(),
                     "Login successful",
-                    user.getPreferredDomains() != null ? user.getPreferredDomains() : java.util.List.of()
+                    user.getPreferredDomains() != null ? new java.util.ArrayList<>(user.getPreferredDomains()) : java.util.List.of()
             ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, null, null, null, e.getMessage(), null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse(null, null, null, null, e.getMessage(), java.util.List.of()));
         }
     }
 
@@ -74,8 +74,8 @@ public class AuthController {
                         user.getEmail(),
                         user.getFullName(),
                         "User found",
-                        user.getPreferredDomains() != null ? user.getPreferredDomains() : java.util.List.of()
+                        user.getPreferredDomains() != null ? new java.util.ArrayList<>(user.getPreferredDomains()) : java.util.List.of()
                 )))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AuthResponse(null, null, null, null, "User not found", null)));
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AuthResponse(null, null, null, null, "User not found", java.util.List.of())));
     }
 }
