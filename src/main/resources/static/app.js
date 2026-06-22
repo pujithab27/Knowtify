@@ -313,16 +313,24 @@ async function completeOnboarding() {
 
             // Ensure domains is always an array
             appState.userDomains = Array.isArray(updatedUser.preferredDomains) ? updatedUser.preferredDomains : domains;
-            console.log('Updated domains:', appState.userDomains, 'Type:', Array.isArray(appState.userDomains));
+            console.log('Updated domains:', appState.userDomains, 'Type:', typeof appState.userDomains);
 
-            // Save to localStorage
-            localStorage.setItem('userDomains_' + appState.currentUser.userId, JSON.stringify(appState.userDomains));
+            // IMPORTANT: Save to localStorage FIRST to ensure data persists
+            const userId = appState.currentUser.userId || appState.currentUser.id;
+            localStorage.setItem('userDomains_' + userId, JSON.stringify(appState.userDomains));
             localStorage.setItem('knowtifyUser', JSON.stringify(appState.currentUser));
+            localStorage.setItem('authTimestamp_' + userId, new Date().getTime().toString());
 
+            console.log('✅ Data saved to localStorage. Domains:', localStorage.getItem('userDomains_' + userId));
+            console.log('✅ User saved:', localStorage.getItem('knowtifyUser') ? 'YES' : 'NO');
             console.log('Preferences saved. User domains:', appState.userDomains);
             showToast(`✅ Perfect! You'll get cards from: ${appState.userDomains.join(', ')}`);
 
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Wait a bit longer to ensure localStorage is written
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Now navigate
+            console.log('Navigating to dashboard...');
             navigateTo('dashboard');
             await loadDashboard();
         } else {
@@ -352,17 +360,21 @@ async function loadDashboard() {
         const userId = appState.currentUser.userId;
         console.log('Loading dashboard for userId:', userId);
 
-        // Refresh user data
-        const userResponse = await fetch(`${API_BASE}/user/${userId}`);
-        if (userResponse.ok) {
-            const freshUser = await userResponse.json();
-            freshUser.userId = freshUser.userId || freshUser.id;
-            appState.currentUser = freshUser;
+        // Refresh user data (optional - use cached data if fails)
+        try {
+            const userResponse = await fetch(`${API_BASE}/user/${userId}`);
+            if (userResponse.ok) {
+                const freshUser = await userResponse.json();
+                freshUser.userId = freshUser.userId || freshUser.id;
+                appState.currentUser = freshUser;
 
-            // Store user domains if they exist
-            if (freshUser.preferredDomains && freshUser.preferredDomains.length > 0) {
-                appState.userDomains = Array.from(freshUser.preferredDomains);
+                // Store user domains if they exist
+                if (freshUser.preferredDomains && freshUser.preferredDomains.length > 0) {
+                    appState.userDomains = Array.from(freshUser.preferredDomains);
+                }
             }
+        } catch (e) {
+            console.warn('Could not refresh user data:', e.message);
         }
 
         // IMPORTANT: Reload streak from localStorage (not from API, as it's stored locally)
@@ -371,17 +383,25 @@ async function loadDashboard() {
         appState.currentUser.currentStreak = currentStreak;
         appState.currentUser.longestStreak = longestStreak;
 
-        // Load user stats
-        const statsResponse = await fetch(`${API_BASE}/knowledge/user/${userId}/stats`);
-        if (statsResponse.ok) {
-            const stats = await statsResponse.json();
-            document.getElementById('statCardsLearned').textContent = stats.totalCardsViewed || 0;
-            document.getElementById('statStreak').textContent = appState.currentUser.currentStreak || 0;
-            document.getElementById('statAccuracy').textContent = Math.round(stats.accuracy || 0) + '%';
+        // Load user stats (optional)
+        try {
+            const statsResponse = await fetch(`${API_BASE}/knowledge/user/${userId}/stats`);
+            if (statsResponse.ok) {
+                const stats = await statsResponse.json();
+                document.getElementById('statCardsLearned').textContent = stats.totalCardsViewed || 0;
+                document.getElementById('statStreak').textContent = appState.currentUser.currentStreak || 0;
+                document.getElementById('statAccuracy').textContent = Math.round(stats.accuracy || 0) + '%';
+            }
+        } catch (e) {
+            console.warn('Could not load stats:', e.message);
         }
 
         // Load domain progress
-        await loadDomainProgress();
+        try {
+            await loadDomainProgress();
+        } catch (e) {
+            console.warn('Could not load domain progress:', e.message);
+        }
 
         console.log('Dashboard loaded. User domains:', appState.userDomains);
     } catch (error) {
