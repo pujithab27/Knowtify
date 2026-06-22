@@ -310,7 +310,10 @@ async function completeOnboarding() {
         if (response.ok) {
             const updatedUser = await response.json();
             appState.currentUser = updatedUser;
-            appState.userDomains = updatedUser.preferredDomains || domains;
+
+            // Ensure domains is always an array
+            appState.userDomains = Array.isArray(updatedUser.preferredDomains) ? updatedUser.preferredDomains : domains;
+            console.log('Updated domains:', appState.userDomains, 'Type:', Array.isArray(appState.userDomains));
 
             // Save to localStorage
             localStorage.setItem('userDomains_' + appState.currentUser.userId, JSON.stringify(appState.userDomains));
@@ -319,9 +322,9 @@ async function completeOnboarding() {
             console.log('Preferences saved. User domains:', appState.userDomains);
             showToast(`✅ Perfect! You'll get cards from: ${appState.userDomains.join(', ')}`);
 
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 1000));
             navigateTo('dashboard');
-            loadDashboard();
+            await loadDashboard();
         } else {
             const errorData = await response.json().catch(() => ({}));
             console.error('Preferences error:', errorData);
