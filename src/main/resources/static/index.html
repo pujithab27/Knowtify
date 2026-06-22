@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowtify - Smart Knowledge Notification System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles-container"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span class="logo-icon">◆</span>
+                <span class="logo-text">Knowtify</span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <button class="nav-btn" onclick="navigateTo('dashboard')">Dashboard</button>
+                <button class="nav-btn" onclick="navigateTo('history')">History</button>
+                <button class="nav-btn" onclick="navigateTo('profile')">Profile</button>
+                <button class="nav-btn logout-btn" onclick="logout()">Logout</button>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Landing Page -->
+    <div id="landingPage" class="page active">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Smart Knowledge</span>
+                    <br>
+                    <span class="gradient-text-alt">Notification System</span>
+                </h1>
+                <p class="hero-subtitle">Learn bite-sized concepts, build deep understanding, no repetition.</p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary" onclick="navigateTo('login')">Get Started</button>
+                    <button class="btn btn-secondary" onclick="scrollToFeatures()">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card">
+                    <div class="card-icon">📚</div>
+                    <div class="card-text">Learning</div>
+                </div>
+            </div>
+        </div>
+
+        <section id="features" class="features-section">
+            <h2 class="section-title">Why Choose Knowtify?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>No Repetition</h3>
+                    <p>Each topic shown once until all are covered. Smart shuffling for next cycle.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Personalized Timing</h3>
+                    <p>Get knowledge cards at intervals that work for you - hourly, daily, or custom.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Bite-Sized Learning</h3>
+                    <p>Digestible concepts with examples and key points. Build intuition step by step.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Track Progress</h3>
+                    <p>Visual progress rings, streaks, and detailed statistics across all domains.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Beautiful Design</h3>
+                    <p>Premium dark theme with glassmorphism and smooth animations throughout.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>Bookmark & Save</h3>
+                    <p>Mark important topics for later review and build your personal knowledge base.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="domains-showcase">
+            <h2 class="section-title">15 Learning Domains</h2>
+            <div class="domains-grid">
+                <div class="domain-badge">DSA</div>
+                <div class="domain-badge">Machine Learning</div>
+                <div class="domain-badge">Web Development</div>
+                <div class="domain-badge">Cloud Computing</div>
+                <div class="domain-badge">AI</div>
+                <div class="domain-badge">Cybersecurity</div>
+                <div class="domain-badge">DevOps</div>
+                <div class="domain-badge">Database</div>
+                <div class="domain-badge">System Design</div>
+                <div class="domain-badge">Mobile Dev</div>
+                <div class="domain-badge">Blockchain</div>
+                <div class="domain-badge">Data Science</div>
+                <div class="domain-badge">Python</div>
+                <div class="domain-badge">Java</div>
+                <div class="domain-badge">Mathematics</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2>Welcome Back</h2>
+                <form onsubmit="handleLogin(event)">
+                    <input type="text" id="loginUsername" placeholder="Username" class="input-field" required>
+                    <input type="password" id="loginPassword" placeholder="Password" class="input-field" required>
+                    <button type="submit" class="btn btn-primary full-width">Sign In</button>
+                </form>
+                <p class="auth-toggle">Don't have an account? <button onclick="navigateTo('register')" class="link-btn">Sign Up</button></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="registerPage" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2>Join Knowtify</h2>
+                <form onsubmit="handleRegister(event)">
+                    <input type="text" id="regUsername" placeholder="Username" class="input-field" required>
+                    <input type="email" id="regEmail" placeholder="Email" class="input-field" required>
+                    <input type="password" id="regPassword" placeholder="Password" class="input-field" required>
+                    <input type="text" id="regFullName" placeholder="Full Name" class="input-field" required>
+                    <button type="submit" class="btn btn-primary full-width">Create Account</button>
+                </form>
+                <p class="auth-toggle">Already have an account? <button onclick="navigateTo('login')" class="link-btn">Sign In</button></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onboarding Page -->
+    <div id="onboardingPage" class="page">
+        <div class="onboarding-container">
+            <h2>Choose Your Learning Domains</h2>
+            <p class="onboarding-subtitle">Select the areas you want to master</p>
+            <div class="domains-select-grid">
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="DSA"> DSA
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Machine Learning"> Machine Learning
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Web Development"> Web Development
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Cloud Computing"> Cloud Computing
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Artificial Intelligence"> AI
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Cybersecurity"> Cybersecurity
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="DevOps"> DevOps
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Database"> Database
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="System Design"> System Design
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Mobile Development"> Mobile Dev
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Blockchain"> Blockchain
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Data Science"> Data Science
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Python"> Python
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Java"> Java
+                </label>
+                <label class="domain-checkbox">
+                    <input type="checkbox" value="Mathematics"> Mathematics
+                </label>
+            </div>
+
+            <div class="notification-settings">
+                <h3>Notification Time</h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Choose when you want to receive daily knowledge cards</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Time</label>
+                        <input type="time" id="notificationTime" class="input-field" value="12:00">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Frequency</label>
+                        <select id="notificationFrequency" class="input-field">
+                            <option value="daily" selected>Daily</option>
+                            <option value="weekdays">Weekdays Only</option>
+                            <option value="weekends">Weekends Only</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary full-width" onclick="completeOnboarding()">Start Learning</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h2>Your Dashboard</h2>
+                <div class="user-stats-summary">
+                    <div class="stat-item">
+                        <div class="stat-label">Cards Learned</div>
+                        <div class="stat-value" id="statCardsLearned">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Current Streak</div>
+                        <div class="stat-value">🔥 <span id="statStreak">0</span></div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Accuracy</div>
+                        <div class="stat-value" id="statAccuracy">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="current-card-section">
+                <div class="section-label">
+                    Today's Knowledge Card
+                    <button class="btn btn-outline" style="float: right; padding: 0.5rem 1rem; font-size: 0.85rem;" onclick="showEditPreferences()">⚙️ Edit Domains</button>
+                </div>
+                <div id="knowledgeCardContainer" class="knowledge-card-wrapper">
+                    <button class="btn btn-primary" onclick="fetchNextCard()">Get Today's Card</button>
+                </div>
+            </div>
+
+            <div class="domains-progress">
+                <h3>Progress by Domain</h3>
+                <div id="domainProgressGrid" class="domain-progress-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Knowledge Card Display -->
+    <div id="cardDisplayPage" class="page">
+        <div class="card-display-container">
+            <button class="btn-back" onclick="navigateTo('dashboard')">← Back</button>
+
+            <div class="knowledge-card-new">
+                <div class="card-header">
+                    <div class="card-badges">
+                        <span class="card-difficulty" id="cardDifficulty">BEGINNER</span>
+                        <span class="card-domain" id="cardDomain">DSA</span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <h2 id="cardTitle" class="card-title">Topic Name</h2>
+                    <p id="cardSummary" class="card-summary"></p>
+
+                    <div class="card-sections">
+                        <div id="whatSection" class="card-section">
+                            <h3>📖 What is it?</h3>
+                            <p id="cardWhat"></p>
+                        </div>
+
+                        <div id="howSection" class="card-section">
+                            <h3>⚙️ How it works</h3>
+                            <p id="cardHow"></p>
+                        </div>
+
+                        <div id="exampleSection" class="card-section">
+                            <h3>💡 Real-world example</h3>
+                            <p id="cardExample"></p>
+                        </div>
+
+                        <div id="whySection" class="card-section">
+                            <h3>🎯 Why it matters</h3>
+                            <p id="cardWhy"></p>
+                        </div>
+                    </div>
+
+                    <div class="card-resources">
+                        <p class="resources-label">🔗 Learn more:</p>
+                        <div class="resource-links">
+                            <a id="wikiLink" href="#" target="_blank" rel="noopener noreferrer" class="resource-link">Wikipedia</a>
+                            <a id="gfgLink" href="#" target="_blank" rel="noopener noreferrer" class="resource-link">GeeksForGeeks</a>
+                            <a id="moreLink" href="#" target="_blank" rel="noopener noreferrer" class="resource-link" id="resourceUrl"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn btn-secondary" onclick="markIncorrect()">❌ Not Clear</button>
+                <button class="btn btn-success" onclick="markCorrect()">✅ Got It!</button>
+                <button class="btn btn-outline" id="bookmarkBtn" onclick="toggleBookmark()">🔖 Bookmark</button>
+            </div>
+
+            <div class="card-footer">
+                <span id="viewCount">Views: 1</span>
+                <span id="timeSpent">Time: 0s</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Page -->
+    <div id="historyPage" class="page">
+        <div class="history-container">
+            <h2>Learning History</h2>
+            <div class="history-filters">
+                <select id="filterDomain" class="input-field" onchange="filterHistory()">
+                    <option value="">All Domains</option>
+                </select>
+                <input type="search" id="searchHistory" class="input-field" placeholder="Search topics..." onkeyup="filterHistory()">
+            </div>
+            <div id="historyList" class="history-list">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profilePage" class="page">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-info">
+                    <h2 id="profileUsername">User</h2>
+                    <p id="profileEmail">user@example.com</p>
+                </div>
+            </div>
+
+            <div class="profile-sections">
+                <div class="profile-section">
+                    <h3>Learning Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat">
+                            <div class="stat-number" id="profileTotalCards">0</div>
+                            <div class="stat-label">Cards Learned</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="profileAccuracy">0%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="profileStreak">0</div>
+                            <div class="stat-label">Current Streak</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="profileLongestStreak">0</div>
+                            <div class="stat-label">Longest Streak</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3>Bookmarked Topics</h3>
+                    <div id="bookmarkedList" class="bookmarked-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3>Achievements</h3>
+                    <div class="achievements-grid">
+                        <div class="achievement" title="First Card">🎯</div>
+                        <div class="achievement" title="7-Day Streak">🔥</div>
+                        <div class="achievement" title="100 Cards">💯</div>
+                        <div class="achievement" title="Perfect Week">⭐</div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <h3>Settings</h3>
+                    <div class="settings-list">
+                        <label class="setting-item">
+                            <span>Enable Notifications</span>
+                            <input type="checkbox" checked>
+                        </label>
+                        <label class="setting-item">
+                            <span>Dark Mode</span>
+                            <input type="checkbox" checked>
+                        </label>
+                        <label class="setting-item">
+                            <span>Sound Effects</span>
+                            <input type="checkbox" checked>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-danger full-width" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

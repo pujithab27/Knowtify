@@ -1,0 +1,326 @@
+package com.knowtify.util;
+
+import com.knowtify.entity.Domain;
+import com.knowtify.entity.Topic;
+import com.knowtify.repository.DomainRepository;
+import com.knowtify.repository.TopicRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class DataInitializer implements CommandLineRunner {
+
+    private final DomainRepository domainRepository;
+    private final TopicRepository topicRepository;
+
+    @Override
+    public void run(String... args) throws Exception {
+        if (domainRepository.count() > 0) {
+            return; // Data already initialized
+        }
+
+        initializeDomains();
+    }
+
+    private void initializeDomains() {
+        // DSA Domain
+        Domain dsa = createDomain("DSA", "Data Structures & Algorithms", "📊", "#7c3aed");
+        createTopics(dsa, new String[][] {
+            {"Arrays", "Ordered collection of elements", "Arrays are the most basic data structure storing elements contiguously in memory."},
+            {"Linked Lists", "Dynamic data structure with nodes", "Linked lists provide O(1) insertion/deletion but O(n) search time."},
+            {"Stacks", "LIFO data structure", "Last In First Out - used for recursion, undo features, and expression evaluation."},
+            {"Queues", "FIFO data structure", "First In First Out - used in scheduling, BFS, and task management."},
+            {"Trees", "Hierarchical data structure", "Trees are fundamental for organizing data hierarchically."},
+            {"Binary Search", "Efficient search algorithm", "O(log n) time complexity - works on sorted data."},
+            {"Sorting Algorithms", "Organizing data", "Different algorithms like Merge Sort, Quick Sort, Heap Sort each with trade-offs."},
+            {"Dynamic Programming", "Optimization technique", "Break problems into subproblems and cache results to avoid recomputation."},
+            {"Graphs", "Network of nodes and edges", "Represent relationships, used in social networks, maps, and more."},
+            {"Big O Notation", "Asymptotic complexity analysis", "Measure algorithm efficiency independent of hardware."},
+        });
+
+        // Machine Learning Domain
+        Domain ml = createDomain("Machine Learning", "Supervised & Unsupervised Learning", "🤖", "#06b6d4");
+        createTopics(ml, new String[][] {
+            {"Supervised Learning", "Learning with labeled data", "Algorithm learns from labeled training data to make predictions."},
+            {"Unsupervised Learning", "Learning without labels", "Discover patterns in unlabeled data through clustering and dimensionality reduction."},
+            {"Neural Networks", "Brain-inspired computation", "Interconnected layers of neurons that learn patterns through backpropagation."},
+            {"Linear Regression", "Predicting continuous values", "Model relationships between variables with a linear equation."},
+            {"Decision Trees", "Tree-based classification", "Make decisions by splitting data based on features."},
+            {"Random Forest", "Ensemble of trees", "Multiple decision trees combined for better accuracy and robustness."},
+            {"SVM", "Support Vector Machines", "Find optimal hyperplane to separate classes in high-dimensional space."},
+            {"K-Nearest Neighbors", "Instance-based learning", "Classify based on k closest training examples."},
+            {"Gradient Descent", "Optimization algorithm", "Iteratively improve model by moving in direction of steepest descent."},
+            {"Overfitting", "Model memorizing noise", "When model performs well on training but poorly on test data."},
+        });
+
+        // Web Development Domain
+        Domain webdev = createDomain("Web Development", "Frontend & Backend Technologies", "🌐", "#ec4899");
+        createTopics(webdev, new String[][] {
+            {"HTML5 Semantics", "Meaningful HTML structure", "Use semantic elements like <article>, <section>, <nav> for better accessibility."},
+            {"CSS Flexbox", "Flexible box layout", "One-dimensional layout model for flexible and responsive designs."},
+            {"CSS Grid", "Two-dimensional layout", "Powerful 2D layout system for complex responsive designs."},
+            {"Responsive Design", "Mobile-first approach", "Design websites that work across all screen sizes and devices."},
+            {"JavaScript ES6+", "Modern JavaScript features", "Arrow functions, destructuring, classes, async/await for cleaner code."},
+            {"DOM Manipulation", "Interact with HTML", "Select and modify elements dynamically using JavaScript."},
+            {"Event Loop", "JavaScript concurrency", "Understand how JS handles async operations and maintains responsiveness."},
+            {"Promises", "Asynchronous operations", "Handle operations that complete in the future with .then() and .catch()."},
+            {"REST APIs", "Resource-based endpoints", "Design APIs using HTTP methods (GET, POST, PUT, DELETE) on resources."},
+            {"Fetch API", "Modern AJAX", "Retrieve data from servers without page reloads using fetch()."},
+        });
+
+        // Cloud Computing Domain
+        Domain cloud = createDomain("Cloud Computing", "Distributed Systems & Infrastructure", "☁️", "#10b981");
+        createTopics(cloud, new String[][] {
+            {"AWS EC2", "Virtual machines", "Elastic Compute Cloud - scalable virtual servers for running applications."},
+            {"AWS S3", "Object storage", "Simple Storage Service - unlimited scalable object storage for any data."},
+            {"AWS Lambda", "Serverless computing", "Run code without provisioning servers - pay only for execution time."},
+            {"Docker", "Container technology", "Package applications with dependencies in lightweight, portable containers."},
+            {"Kubernetes", "Container orchestration", "Automate deployment, scaling, and management of containerized applications."},
+            {"CI/CD Pipelines", "Automated deployment", "Continuous Integration and Deployment for automated testing and releases."},
+            {"Load Balancing", "Distribute traffic", "Distribute incoming requests across multiple servers for high availability."},
+            {"Auto Scaling", "Dynamic capacity", "Automatically adjust resources based on demand to optimize costs."},
+            {"VPC", "Virtual Private Cloud", "Isolated network environment for your cloud resources with custom IP ranges."},
+            {"Microservices", "Distributed architecture", "Build applications as loosely coupled, independently deployable services."},
+        });
+
+        // Artificial Intelligence Domain
+        Domain ai = createDomain("Artificial Intelligence", "LLMs, Vision, and NLP", "✨", "#f97316");
+        createTopics(ai, new String[][] {
+            {"Large Language Models", "Transformer-based models", "Models like GPT that understand and generate human-like text."},
+            {"Prompt Engineering", "Guiding LLM outputs", "Craft prompts to get better, more specific responses from language models."},
+            {"RAG", "Retrieval-Augmented Generation", "Combine retrieval of documents with generation for accurate, sourced responses."},
+            {"Computer Vision", "Processing images", "Enable machines to understand, interpret, and make decisions from visual data."},
+            {"Object Detection", "Finding things in images", "Identify and locate objects within images with bounding boxes."},
+            {"NLP", "Natural Language Processing", "Process and understand human language through tokenization, embeddings, and models."},
+            {"Embeddings", "Vector representations", "Convert words/sentences into numerical vectors capturing semantic meaning."},
+            {"Attention Mechanism", "Focus on relevant parts", "Allow models to weigh importance of different input parts."},
+            {"Transformers", "Modern neural architecture", "Parallel processing architecture that powers modern LLMs."},
+            {"Fine Tuning", "Customizing models", "Adapt pre-trained models to specific tasks with domain data."},
+        });
+
+        // Cybersecurity Domain
+        Domain security = createDomain("Cybersecurity", "Protection & Threats", "🔒", "#ef4444");
+        createTopics(security, new String[][] {
+            {"SQL Injection", "Database attack", "Malicious SQL code execution through vulnerable input fields."},
+            {"XSS", "Cross-Site Scripting", "Inject malicious scripts into websites to steal user data."},
+            {"CSRF", "Cross-Site Request Forgery", "Force authenticated users to perform unwanted actions."},
+            {"Encryption", "Data protection", "Transform data into unreadable form that only authorized parties can decrypt."},
+            {"Hashing", "One-way encryption", "Convert data to fixed-size hash for verification without decryption."},
+            {"SSL/TLS", "Secure communication", "Encrypt data in transit between client and server over networks."},
+            {"2FA", "Two-Factor Authentication", "Require two verification methods for enhanced account security."},
+            {"Firewalls", "Network security", "Monitor and control incoming/outgoing network traffic."},
+            {"Penetration Testing", "Security assessment", "Authorized testing to find vulnerabilities before attackers do."},
+            {"OWASP Top 10", "Common vulnerabilities", "Most critical web security risks that developers must know."},
+        });
+
+        // DevOps Domain
+        Domain devops = createDomain("DevOps", "Deployment & Infrastructure Automation", "⚙️", "#8b5cf6");
+        createTopics(devops, new String[][] {
+            {"Git", "Version control system", "Track code changes, collaborate with teams, manage branches and merges."},
+            {"Docker", "Container platform", "Containerize applications for consistency across environments."},
+            {"Kubernetes", "Orchestration platform", "Manage containerized applications at scale with automation."},
+            {"Jenkins", "CI/CD automation", "Automate building, testing, and deploying applications."},
+            {"GitHub Actions", "Workflow automation", "Automate tasks directly in GitHub repositories."},
+            {"Terraform", "Infrastructure as Code", "Define and provision cloud infrastructure using code."},
+            {"Ansible", "Configuration management", "Automate server configuration and application deployment."},
+            {"Monitoring", "System observability", "Track metrics and logs to understand system health and performance."},
+            {"Blue-Green Deployment", "Zero-downtime releases", "Switch between two identical environments for safe deployments."},
+            {"Canary Release", "Gradual rollout", "Deploy to small subset first, then gradually roll out to all users."},
+        });
+
+        // Database Domain
+        Domain database = createDomain("Database", "SQL & NoSQL Technologies", "🗄️", "#06b6d4");
+        createTopics(database, new String[][] {
+            {"SQL Basics", "Query language", "SELECT, INSERT, UPDATE, DELETE - fundamental operations on relational data."},
+            {"Joins", "Combining tables", "INNER, LEFT, RIGHT, FULL OUTER - combine data from multiple tables."},
+            {"Indexes", "Fast lookups", "Create indexes on columns for faster search and query performance."},
+            {"Normalization", "Data organization", "Organize data to reduce redundancy and improve data integrity."},
+            {"ACID Properties", "Transaction guarantees", "Atomicity, Consistency, Isolation, Durability for reliable transactions."},
+            {"Transactions", "Multi-step operations", "Ensure multiple changes are applied together or rolled back together."},
+            {"NoSQL", "Non-relational databases", "Flexible schema databases for unstructured data at scale."},
+            {"MongoDB", "Document database", "Store data as JSON documents with flexible schemas."},
+            {"Redis", "In-memory cache", "Ultra-fast key-value store for caching and real-time analytics."},
+            {"Sharding", "Horizontal scaling", "Distribute data across multiple servers for handling large datasets."},
+        });
+
+        // System Design Domain
+        Domain sysdesign = createDomain("System Design", "Scalability & Architecture", "🏗️", "#14b8a6");
+        createTopics(sysdesign, new String[][] {
+            {"Scalability", "Handle growth", "Design systems that maintain performance as data and users grow."},
+            {"Load Balancing", "Distribute load", "Distribute requests across servers to prevent bottlenecks."},
+            {"Caching", "Reduce latency", "Store frequently accessed data in fast-access storage."},
+            {"CDN", "Content Delivery", "Distribute content geographically for faster access worldwide."},
+            {"Database Replication", "Data redundancy", "Copy data across multiple servers for availability and read scaling."},
+            {"Message Queues", "Asynchronous processing", "Decouple services using queues for reliable async communication."},
+            {"API Gateway", "Request routing", "Single entry point for routing requests to appropriate services."},
+            {"Rate Limiting", "Request throttling", "Limit requests per user to prevent abuse and ensure fair usage."},
+            {"Consistent Hashing", "Distributed mapping", "Map keys to servers efficiently with minimal remapping on scale changes."},
+            {"CQRS", "Command Query Separation", "Separate read and write models for independent optimization."},
+        });
+
+        // Mobile Development Domain
+        Domain mobile = createDomain("Mobile Development", "iOS & Android Development", "📱", "#f59e0b");
+        createTopics(mobile, new String[][] {
+            {"Android Activities", "Screens & components", "Building blocks of Android apps representing individual screens."},
+            {"iOS Swift", "Apple's language", "Modern, safe, expressive language for iOS application development."},
+            {"Flutter", "Cross-platform framework", "Build iOS and Android apps from single Dart codebase."},
+            {"React Native", "JavaScript for mobile", "Use JavaScript and React to build native mobile applications."},
+            {"State Management", "UI updates", "Manage app state changes and update UI efficiently."},
+            {"Navigation", "Screen transitions", "Implement navigation stacks and flows between screens."},
+            {"Push Notifications", "User messaging", "Send timely messages to engage users outside the app."},
+            {"Local Storage", "Device persistence", "Store user data locally on device for offline access."},
+            {"API Integration", "Backend communication", "Connect mobile apps to backend services via REST or GraphQL."},
+            {"Performance Optimization", "Fast apps", "Optimize rendering, memory usage, and battery consumption."},
+        });
+    }
+
+    private Domain createDomain(String name, String description, String icon, String colorCode) {
+        Domain domain = new Domain(name, description, icon, colorCode);
+        return domainRepository.save(domain);
+    }
+
+    private void createTopics(Domain domain, String[][] topicsData) {
+        for (String[] topicData : topicsData) {
+            Topic topic = new Topic(
+                topicData[0],
+                topicData[1],
+                generateFullContent(topicData[0], topicData[2]),
+                domain
+            );
+            topic.setDifficultyLevel(getDifficultyLevel(topicData[0]));
+            topic.setKeyPoints(generateKeyPoints(topicData[0]));
+            topic.setExample(generateExample(topicData[0]));
+            topic.setExternalLink(generateExternalLink(domain.getName(), topicData[0]));
+            topicRepository.save(topic);
+        }
+    }
+
+    private String generateFullContent(String topicName, String briefContent) {
+        // Return the 5-6 line detailed explanation
+        return generateExample(topicName);
+    }
+
+    private String getDifficultyLevel(String topicName) {
+        if (topicName.contains("Basics") || topicName.contains("Introduction") ||
+            topicName.contains("Semantics") || topicName.contains("Variables")) {
+            return "BEGINNER";
+        } else if (topicName.contains("Advanced") || topicName.contains("Complex") ||
+                   topicName.contains("Optimization")) {
+            return "ADVANCED";
+        }
+        return "INTERMEDIATE";
+    }
+
+    private String generateKeyPoints(String topicName) {
+        return "1. Understand core concepts\n2. Learn applications\n3. Practice examples\n4. Review edge cases\n5. Solve problems";
+    }
+
+    private String generateExample(String topicName) {
+        // 3-4 line detailed explanations
+        String examples = topicName.toLowerCase();
+
+        if (examples.contains("array")) return "Arrays are contiguous memory blocks storing homogeneous elements with direct indexing capability. This physical contiguity enables CPU cache optimization and O(1) random access by index calculation, making them extremely efficient for read operations. However, this fixed-size contiguity creates constraints: insertion/deletion at the middle or beginning requires O(n) shifting of subsequent elements, resulting in poor performance for dynamic operations. Dynamic arrays (ArrayLists, vectors) address this by allocating excess capacity and reallocating when full, amortizing insertion cost. Arrays remain fundamental because they balance simplicity, memory efficiency, and cache locality, making them optimal for sorted data structures, stack/queue implementations, and numerical computing where iteration patterns are predictable.";
+        if (examples.contains("linked list")) return "Linked lists decouple data storage from sequence representation using nodes containing data and references to successor nodes, enabling dynamic memory allocation without contiguity requirements. This structure provides O(1) insertion/deletion at known positions (only pointer updates), solving arrays' limitation where restructuring requires copying. However, sequential access nature enforces O(n) traversal for lookups, eliminating random access capability and destroying cache locality since nodes scatter across memory. Variants like doubly-linked lists enable bidirectional traversal but double memory overhead, while circular structures enable efficient wraparound implementations. Linked lists excel in scenarios requiring frequent insertions/deletions at known positions (LRU caches, undo stacks) but perform poorly for search-heavy workloads, making algorithmic selection critical for performance.";
+        if (examples.contains("stack")) return "Stacks implement the Last-In-First-Out (LIFO) protocol where the most recently inserted element becomes the only accessible element, restricting operations to push (insertion) and pop (removal) from the top. This restriction paradoxically provides efficiency: both operations execute in O(1) time regardless of stack size, and memory access is highly predictable for cache optimization. Stacks naturally model function call sequences (call stack), enabling automatic variable scoping and recursive computation; undo/redo functionality in applications; expression evaluation through postfix notation conversion; and depth-first traversal in graphs. Despite restrictive interface, stacks are indispensable for language runtime systems, compiler design, and algorithms where depth-first exploration is required. Understanding stack-based execution is fundamental to comprehending how programming languages manage function calls and memory.";
+        if (examples.contains("queue")) return "Queues enforce the First-In-First-Out (FIFO) principle where elements exit in insertion order, modeling real-world scenarios like customer queues or task scheduling. Both enqueue (rear insertion) and dequeue (front removal) operate in O(1) time with array-based circular implementation, which cleverly reuses freed positions to avoid the naive O(n) shifting cost. Priority queues extend this model by extracting elements by priority rather than insertion order, requiring O(log n) implementations using heaps. Applications span CPU task scheduling (fairness guarantees), breadth-first search (level-by-level exploration), message passing systems (preserving order under load), and load balancing. Queue theory governs server utilization and response time analysis, making queues critical in distributed systems design where maintaining order under concurrent access prevents data loss.";
+        if (examples.contains("tree")) return "Trees represent hierarchical relationships through parent-child node connections, forming acyclic graphs with a designated root and enabling logarithmic depth for n nodes. Binary trees restrict children to two per node, creating frameworks for efficient searching when values satisfy binary search property (left subtree < node < right subtree), enabling O(log n) search. Self-balancing variants like AVL trees and red-black trees maintain height balance through rotations, guaranteeing logarithmic operations regardless of insertion order, solving naive BST degeneration to linked-list performance. Trees enable efficient file system hierarchies, DOM representation in browsers, expression parsing, game AI minimax algorithms, and database indexing through B-trees. Tree traversals (in-order produces sorted output, pre-order enables structure reconstruction, post-order enables deletion) expose different data access patterns critical for algorithm design and optimization.";
+        if (examples.contains("binary search")) return "Binary search requires a sorted array and exploits the sorted property by repeatedly dividing the search space in half, eliminating half the remaining elements with each comparison. This divide-and-conquer strategy achieves O(log n) time complexity, dramatically faster than linear search's O(n)—for a million-element array, binary search requires ~20 comparisons versus 500,000 for linear search. Binary search's logarithmic efficiency makes it ideal for database lookups, range queries, and finding boundaries in sorted datasets. However, the prerequisite is strict: the array must be sorted before searching, either initially or through preprocessing. Despite this constraint, binary search is a foundational algorithm appearing in countless real-world systems from version control bisection to physics simulations.";
+        if (examples.contains("sorting")) return "Sorting algorithms organize data in ascending or descending order, forming the basis for binary search, efficient deduplication, and database indexing. Each algorithm has distinct trade-offs: Quick Sort excels with average O(n log n) but can degrade to O(n²) with poor pivots; Merge Sort guarantees O(n log n) but uses O(n) extra space; Heap Sort uses O(1) space but has worse cache performance. Selection depends on data characteristics: nearly-sorted data benefits from Insertion Sort, small arrays from Quick Sort, and guarantees on worst-case from Merge Sort. Most production languages use Timsort (hybrid of Merge Sort and Insertion Sort) as their default, providing O(n log n) worst-case with O(n) best-case for nearly-sorted data. Sorting appears in 90% of real applications, making algorithm selection critical for performance.";
+        if (examples.contains("dynamic programming")) return "Dynamic Programming (DP) solves optimization problems exhibiting optimal substructure (optimal solution built from optimal subproblems) and overlapping subproblems by caching intermediate results, eliminating exponential recomputation. Fibonacci exemplifies this: naive recursion recalculates fib(5) exponentially many times, while DP stores each result once, reducing fib(50) from 2^50 operations to 50 operations. DP uses two approaches: memoization (top-down recursion with caching) for intuitive problem-solving, and tabulation (bottom-up iteration) for space optimization. Classic problems—knapsack, longest common subsequence, coin change, edit distance—all reduce from exponential to polynomial complexity through DP, making it essential for competitive programming and optimization problems. Understanding DP requires recognizing when subproblems repeat, the critical insight separating it from greedy or divide-and-conquer approaches.";
+        if (examples.contains("graph")) return "Graphs represent complex relationships as nodes (vertices) and connections (edges), modeling everything from social networks to transportation systems, molecular structures, and web links. Graphs come in variants: directed graphs (one-way streets, Twitter follows) versus undirected (friendships, roads); weighted graphs (distance, cost) versus unweighted; cyclic graphs (loops possible) versus DAGs (directed acyclic graphs). Graph algorithms enable critical operations: BFS explores level-by-level finding shortest paths in unweighted graphs, DFS enables topological sorting and cycle detection, and Dijkstra's algorithm finds shortest paths in weighted graphs. Applications span recommendation systems (suggesting products through user-product graphs), navigation (Google Maps route optimization), social networks (friend suggestions through graph traversal), dependency resolution (package managers analyzing requirement DAGs), and compiler optimization (representing data flow). Graph theory complexity—O(V+E) for traversal versus O(V²) for denser representations—drives algorithm selection and system design decisions.";
+        if (examples.contains("big o")) return "Big O notation describes algorithm performance as data grows asymptotically, ignoring constant factors and lower-order terms to focus on growth rate. O(1) is constant (independent of input size—ideal), O(log n) is logarithmic (binary search), O(n) is linear (simple loop), O(n log n) is linearithmic (efficient sorting), O(n²) is quadratic (nested loops—slow), O(2ⁿ) is exponential (brute-force—terrible). For 1 million items: O(n)=1M operations, O(log n)=20 operations, O(n²)=1 trillion operations. Space complexity applies similarly: O(1) constant space, O(n) linear space (proportional to input). Choosing O(n log n) sorting over O(n²) saves years of CPU time across billion-item datasets. Big O analysis guides algorithm selection, predicting whether code scales or becomes unusable. Understanding that doubling input size might multiply runtime by 2 (linear), 4 (quadratic), or negligibly (logarithmic) is essential for responsible software engineering.";
+
+        if (examples.contains("supervised")) return "Supervised learning uses labeled training data where each input has corresponding output labels, enabling the model to learn the mapping between features and targets by minimizing prediction error on training examples. The learning process divides data into train/validation/test splits, using training data to adjust weights, validation data to tune hyperparameters, and test data to estimate real-world performance unseen during training. Common algorithms include linear regression (continuous outputs), logistic regression (binary classification), and decision trees (hierarchical splits), each with different computational costs and interpretability. Once trained, the model generalizes to predict outputs for new, unseen inputs—the critical test of learning. Challenges include overfitting (memorizing training noise), underfitting (too-simple models), and distribution shift (test data differing from training). Supervised learning dominates real-world machine learning due to abundant labeled data and clear evaluation metrics, powering spam detection, credit scoring, and medical diagnosis systems.";
+        if (examples.contains("unsupervised")) return "Unsupervised learning discovers hidden patterns in unlabeled data without predefined outputs, requiring the algorithm itself to define similarity and structure. K-means clustering partitions data into k groups by minimizing within-cluster distance, useful for customer segmentation where 'customer types' are unknown beforehand. Dimensionality reduction (PCA, t-SNE) projects high-dimensional data into lower dimensions, revealing structure and improving visualization—critical since humans cannot visualize beyond 3D. Hierarchical clustering creates dendrograms showing nested groupings at different granularities. Anomaly detection identifies outliers by learning the 'normal' data distribution. Challenges include determining correct k value, interpreting discovered patterns, and evaluating quality (no ground-truth labels). Unsupervised learning excels in exploratory data analysis, feature engineering (discovering useful representations), and scenarios with abundant unlabeled data (images, text) where labeling is prohibitively expensive.";
+        if (examples.contains("neural network")) return "Neural networks consist of interconnected layers of neurons where each connection carries a learnable weight, enabling nonlinear function approximation through composition of simple transformations. Training via backpropagation (chain rule differentiation) adjusts weights to minimize loss function, with gradient descent as the optimization engine—fundamentally a pattern-finding machine. Deep learning uses many hidden layers to learn hierarchical representations: early layers detect simple patterns (edges in images), intermediate layers combine these (shapes), and deep layers abstract semantically meaningful features (objects). Specialized architectures excel at different domains: CNNs (convolutional neural networks) exploit spatial locality in images through weight sharing; RNNs process sequential data maintaining hidden state; Transformers (using attention mechanisms) parallelize sequence processing, powering modern LLMs like ChatGPT. Neural networks are universal function approximators theoretically, with depth trading off expressiveness against computational cost—explaining why deep learning requires GPUs and careful hyperparameter tuning.";
+        if (examples.contains("linear regression")) return "Linear regression models the relationship between independent variables (features) and a dependent variable (target) using a linear equation y = mx + b (simple) or y = w₁x₁ + w₂x₂ + ... + b (multiple), fitting a hyperplane through data by minimizing squared prediction errors. The closed-form solution (least squares) provides optimal weights analytically without iteration, making linear regression computationally efficient and providing interpretability: each weight shows feature impact on predictions. Despite simplicity, linear regression works remarkably well when relationships are approximately linear, forming the foundation for regularized variants: Ridge regression (L2 penalty) and Lasso regression (L1 penalty) prevent overfitting by penalizing large weights. Logistic regression extends this for binary classification, applying a sigmoid function to regression output for probabilities. Challenges include sensitivity to outliers, inability to capture nonlinear patterns, and multicollinearity (correlated features). Linear regression remains the starting baseline for regression problems, essential for causal inference and interpretable machine learning.";
+        if (examples.contains("decision tree")) return "Decision Trees recursively partition feature space by selecting splits that maximally separate classes or reduce prediction variance, creating a tree of if-then-else rules interpretable by humans. At each node, the algorithm evaluates features to find the best split—typically using information gain (entropy reduction) for classification or variance reduction for regression. Splitting stops when nodes become pure (all same class) or reach depth limits, creating leaves that output class predictions or continuous values. Decision trees handle nonlinear relationships naturally, requiring no feature scaling, and provide feature importance rankings showing which variables matter most. Limitations include overfitting to training noise (pruning mitigates this), difficulty with sparse data, and instability (small data changes cause large tree restructuring). Applications span medical diagnosis (interpretable rules), fraud detection, and recommendation systems where explainability matters. Tree ensembles (Random Forests, Gradient Boosting) address overfitting while maintaining interpretability.";
+        if (examples.contains("random forest")) return "Random Forests are ensemble models that train many decision trees on random subsets of data and features, combining predictions through majority voting (classification) or averaging (regression) to reduce overfitting. Each tree is trained independently on a bootstrap sample (random sampling with replacement), introducing diversity that makes the ensemble more robust than individual trees. Feature randomness further reduces correlation between trees: at each split, only a random subset of features is considered, forcing trees to discover different patterns. The averaging of diverse trees reduces variance while maintaining bias, achieving stronger generalization than single trees without the bias-variance trade-off of linear models. Random Forests rank feature importance by averaging each feature's contribution across all trees. Hyperparameters include number of trees (more is better, with diminishing returns), tree depth, and feature subset size. Applications span image classification, genomics, and financial modeling where robust, high-accuracy predictions matter more than interpretability.";
+        if (examples.contains("svm") || examples.contains("support vector")) return "Support Vector Machines (SVMs) find the optimal hyperplane that maximizes the margin (distance) between classes in feature space, with the key insight that the decision boundary often depends only on similar (support) points. In linearly separable data, SVM finds the widest \"street\" between classes; in non-separable data, it allows some misclassifications (soft margin) using a regularization parameter C. The kernel trick maps data into higher dimensions where linear separation becomes possible, enabling SVMs to handle nonlinear patterns efficiently without explicitly computing high-dimensional feature vectors. Common kernels include linear (fast, interpretable), polynomial (curved boundaries), RBF/Gaussian (flexible, universal), and sigmoid. SVMs excel at binary classification with clear boundaries and small-to-medium datasets; they scale poorly with dataset size (quadratic complexity). Applications include text classification (spam detection), medical diagnosis, and anomaly detection where margin-based thinking provides theoretical guarantees and practical robustness.";
+        if (examples.contains("k-nearest neighbors") || examples.contains("knn")) return "K-Nearest Neighbors (KNN) classifies new points by finding the K closest training examples and using their class labels, operating on the assumption that similar points have similar labels. The distance metric (Euclidean, Manhattan, cosine) determines similarity; the choice affects performance and should match the problem domain. The hyperparameter K controls the trade-off: K=1 overfits to training noise, larger K smooths but risks underfitting. KNN requires no training (lazy learning)—all work happens at prediction time. Strengths include simplicity, intuitive interpretability (explain by showing similar examples), and effectiveness for non-convex, irregular decision boundaries. Limitations include poor scaling (computing distances to all training points for each prediction), sensitivity to irrelevant features, and requirement to scale features (KNN uses distance metrics). Applications span recommendation systems (show similar products), anomaly detection (find points far from neighbors), and simple baseline models. Feature engineering and dimensionality reduction critical for good performance.";
+        if (examples.contains("gradient descent")) return "Gradient Descent is an optimization algorithm that iteratively improves a model by moving parameters in the direction of steepest decrease of the loss function, with step size controlled by the learning rate. The gradient (partial derivatives) points uphill; moving opposite the gradient reduces loss. Batch gradient descent computes gradients using the entire dataset (accurate but slow); stochastic gradient descent uses single examples (noisy but fast); mini-batch variants balance both. Learning rate is critical: too large causes divergence, too small means slow convergence. Variants include momentum (accumulates gradient history for inertia), Adam (adaptive learning rates per parameter), and RMSprop, which add sophisticated tracking to accelerate convergence. Challenges include getting stuck in local minima (mitigated by multiple restarts), saddle points, and choosing learning rates. Understanding gradient descent is fundamental to deep learning: every neural network training uses it under the hood. Visualization of loss landscapes reveals why certain problems are easy (smooth) vs hard (many local minima).";
+        if (examples.contains("overfitting")) return "Overfitting occurs when a model learns training data patterns so well that it captures noise and training-specific artifacts, hurting performance on unseen test data. A model with high training accuracy but low test accuracy has overfit. Causes include model complexity exceeding data size, training for too long, or not regularizing. Prevention strategies include: (1) Regularization—add penalties for complex models (L1/L2 reduce weights), (2) Early stopping—stop training when validation loss plateaus, (3) Data augmentation—generate synthetic examples, (4) Dropout—randomly disable neurons during training, (5) Cross-validation—estimate test performance from multiple train/validation splits. Underfitting (low train and test accuracy) indicates the model is too simple; the bias-variance trade-off captures this: complex models have high variance (overfit), simple models high bias (underfit). Recognizing overfitting requires separate test data unseen during training; accuracy on training data is misleading. Practical machine learning spends most effort fighting overfitting through thoughtful model selection and validation strategy.";
+
+        if (examples.contains("html")) return "HTML5 provides semantic elements like <article>, <section>, <nav>, <header>, <footer> that explicitly describe content meaning rather than just visual layout, improving both machine and human understanding. Semantic HTML benefits accessibility for screen readers (aria labels work better with semantic structure), search engine optimization (Google indexes semantic structure better), and code maintainability (meaning is self-documenting). Best practices include proper heading hierarchy (h1 for page title, h2-h6 for subsections in order), descriptive alt text for images (benefits blind users and image search), and using semantic elements instead of generic <div> everywhere. HTML5 introduced form validation, video/audio tags eliminating plugins, canvas for graphics, and geolocation APIs. HTML remains the foundation that CSS provides visual styling and JavaScript provides interactivity upon, with poorly structured HTML making styling difficult and JavaScript fragile.";
+        if (examples.contains("flexbox")) return "Flexbox is a one-dimensional layout model designed for distributing space and aligning items in rows or columns, solving decades of ad-hoc CSS layout hacks. Core properties include flex-direction (row/column), justify-content (align along main axis), align-items (align perpendicular axis), and flex (grow/shrink/basis). Flexbox automatically handles responsive design by wrapping items when space runs out without media queries. It's ideal for navigation bars (horizontally flexible items), toolbars (space distribution), and centering content (previously nightmare-inducing). Flexbox's power derives from converting fixed-size items into flexible units that share remaining space intelligently, eliminating float-based layouts and table hacks. Unlike Grid's 2D explicit structure, Flexbox's 1D fluid nature makes it perfect for component-level layouts while Grid handles page-level structure.";
+        if (examples.contains("grid")) return "CSS Grid is a two-dimensional layout system for complex page structures, enabling explicit placement of items across defined columns and rows. Syntax is powerful: grid-template-columns: 1fr 2fr 1fr creates three columns where center column is twice wider; items can span multiple cells via grid-column: 1/3 (columns 1-3). Grid automatically handles alignment, gaps (space between cells), and complex responsive layouts elegantly without nested containers. It's perfect for dashboards (widget positioning), photo galleries (items spanning various cell counts), full-page layouts (header spanning all columns, sidebar and main content in row), and application layouts. Subgrid enables nested grids inheriting parent dimensions. Grid's explicit nature (defining structure upfront) differs from Flexbox's fluid nature (items adapt to available space), making both complementary: Grid for overall page architecture, Flexbox for component internals.";
+        if (examples.contains("responsive")) return "Responsive design adapts layouts to different screen sizes and capabilities using flexible layouts (proportional sizing), media queries (conditional CSS at breakpoints), and relative units (percentages, em, rem) instead of fixed pixels. Mobile-first approach designs for 320px smartphones first, then progressively enhances for tablets (768px), desktops (1024px), and large screens (1920px+), ensuring the simplest experience works everywhere rather than breaking small screens. Breakpoints trigger layout changes: @media (min-width: 768px) { /* tablet styles */ } progressively enhances. Modern Flexbox and Grid make responsiveness native without complex calculations that floats required. Images use max-width: 100% and srcset for resolution adaptation. Meta viewport tag essential for mobile: <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">. Responsive design is no longer optional—over 60% of web traffic comes from mobile devices.";
+        if (examples.contains("javascript es6")) return "ES6 (ECMAScript 2015) revolutionized JavaScript with modern features: arrow functions (const add = (a,b) => a+b) are concise with lexical this binding, destructuring unpacks nested data ({x, y} = point), classes provide OOP syntax as sugar over prototypes, and async/await makes asynchronous code read synchronously. let/const replace var's confusing function-scoping with block-scoping, preventing accidental globals. Template literals (backticks with ${expression}) replace string concatenation. Spread operator (...) unpacks arrays/objects. Modules (import/export) enable organizing large codebases unlike global namespace pollution. These features make JavaScript more expressive, readable, and maintainable, transforming it from a toy language to a serious programming language. ES6+ became a permanent yearly upgrade process, with modern JavaScript vastly different from pre-2015 JavaScript.";
+        if (examples.contains("dom")) return "The DOM (Document Object Model) represents HTML as a tree of JavaScript objects that code can dynamically modify, providing the bridge between static HTML and dynamic interactivity. Querying uses querySelector ('.class') or getElementById, selecting nodes representing elements, attributes, and text. Modification uses textContent/innerHTML (change content), classList (manage CSS classes), setAttribute (change attributes), appendChild (add children). Listeners via addEventListener detect user interactions (click, hover, input), triggering callbacks. Every DOM change triggers reflows (recalculating layouts) and repaints (redrawing pixels), expensive operations making naive DOM manipulation slow. Performance optimization includes: minimize reflows (batch changes), use event delegation (one listener on parent instead of many on children), cache DOM references (query once, use multiple times). Virtual DOM (React/Vue approach) batches changes then applies once, avoiding cascading reflows. Modern frameworks abstract DOM manipulation complexity.";
+        if (examples.contains("event loop")) return "The event loop manages JavaScript's single-threaded execution model, processing synchronous code, microtasks (Promises, queueMicrotask), and macrotasks (timers, I/O) in strict order. Synchronous code executes first, blocking everything—long operations freeze the UI. Microtasks (higher priority) run after synchronous code before macrotasks, explaining why Promise.then() runs before setTimeout() despite setTimeout appearing first. setTimeout queues macrotask, which executes only after all synchronous code and microtasks complete, explaining why setTimeout(0) doesn't run immediately. Understanding this prevents UI freezes: CPU-intensive work should use setTimeout to yield control, letting user interactions process. async/await uses microtasks internally. Visualizing the event loop via animation tools helps grasp the concept. This single-threaded model's simplicity contrasts with multi-threaded languages, trading concurrency complexity for predictable, race-condition-free execution—JavaScript's elegance and limitation.";
+        if (examples.contains("promise")) return "Promises represent asynchronous operations with three states: pending (initial), fulfilled (success with result), rejected (failure with reason). Promise-based APIs return immediately with a Promise object, eventually invoking callbacks. Chaining via .then(successCallback, errorCallback) handles both cases, with .catch(errorCallback) shorthand for only handling errors. .finally(cleanupCallback) runs regardless of outcome. Promise.all(promises) waits for all, failing if any fail; Promise.race(promises) returns first to settle. Error handling propagates: throw or rejection in .then passes to next .catch. Promise chains avoid callback hell (deeply nested callbacks), making async code flow like synchronous code. async/await is syntactic sugar: async functions return Promises, await pauses execution until Promise settles, with try/catch handling errors. Promises are fundamental to modern JavaScript, the foundation for reactive programming, and essential for managing timeouts, API calls, and database operations.";
+        if (examples.contains("fetch api")) return "Fetch API is the modern replacement for XMLHttpRequest, providing a Promise-based interface for retrieving remote data without page reloads. Basic usage: fetch(url) returns a Promise resolving with a Response object containing status (200 for success, 404 for not found) and methods like .json(), .text(), .blob() to parse the body. Always check response.ok (200-299 status) before parsing, since non-2xx statuses don't reject the Promise—network failure does. Request customization via options: fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}). CORS restrictions apply: cross-origin requests require server permission. Used for REST APIs, file uploads (FormData), real-time data (polling or WebSockets), and single-page applications. Error handling: network failures reject Promise, HTTP errors require manual checking, timeouts need AbortController. Modern and widely supported in all browsers, eliminating XMLHttpRequest verbosity.";
+
+        // AI & NLP Topics
+        if (examples.contains("large language models") || examples.contains("llm")) return "Large Language Models (LLMs) are neural networks trained on massive text corpora (hundreds of billions of tokens) to predict the next word in a sequence, learning patterns about language, facts, reasoning, and code. Models like GPT-3, GPT-4, and Claude contain billions to trillions of parameters (weights), enabling them to understand context across long documents and generate coherent, contextually-relevant text. Training uses self-supervised learning: the model sees text without labels and learns to predict masked or subsequent tokens, a task that forces the model to develop internal representations of language meaning. Once trained, LLMs can perform few-shot learning—adapting to new tasks with just a few examples—without retraining. LLMs power chatbots, code generation, translation, summarization, and question-answering. Key limitations include hallucinations (confident false statements), sensitivity to prompt wording, and inability to access real-time information without retrieval augmentation.";
+        if (examples.contains("prompt engineering")) return "Prompt engineering is the art of crafting inputs to language models to elicit desired outputs, treating the model as a system to be optimized through careful input design. Simple techniques include being specific (\"Explain X like I'm 5\" vs \"Explain X\"), providing context and examples (few-shot prompting), and breaking complex tasks into steps (chain-of-thought prompting). Advanced techniques include using system prompts (instructions for how to behave), role-playing (\"Act as a Python expert\"), and structured outputs (\"Respond in JSON format\"). Prompt engineering matters because LLM behavior is highly sensitive to wording: small changes in phrasing produce dramatically different outputs. Research shows that well-engineered prompts can make weaker models (like GPT-3.5) perform nearly as well as stronger models (GPT-4). Effective prompting requires understanding the model's training data, capabilities, and failure modes, making it part art and part science.";
+        if (examples.contains("rag") || examples.contains("retrieval-augmented")) return "Retrieval-Augmented Generation (RAG) is a technique that combines information retrieval with text generation to produce more accurate, grounded, and up-to-date responses from language models. Instead of relying solely on a model's training data (which becomes stale), RAG first retrieves relevant documents from a knowledge base using similarity search (semantic retrieval), then passes those documents as context to the language model. The model then generates responses grounded in the retrieved information, reducing hallucinations and enabling access to current information. A typical RAG system includes: (1) document embeddings (converting text to vectors), (2) vector similarity search (finding relevant documents), (3) prompt augmentation (adding retrieved documents to context), and (4) generation (LLM creates response). Applications include customer support (retrieve company docs before answering), research assistants (cite sources), and question-answering over private documents. RAG offers a practical balance between the knowledge of large models and the currency and specificity of document databases.";
+        if (examples.contains("computer vision")) return "Computer Vision enables machines to understand and interpret visual information from images and videos, extracting meaningful patterns and taking actions based on visual understanding. Core tasks include image classification (categorizing images into classes), object detection (finding and locating objects), semantic segmentation (labeling each pixel), instance segmentation (distinguishing individual objects), and pose estimation (detecting body joint positions). Modern computer vision uses convolutional neural networks (CNNs) that learn hierarchical visual features: early layers detect edges and textures, middle layers combine these into shapes, and deep layers recognize objects and scenes. Applications span medical imaging (disease diagnosis), autonomous vehicles (road understanding), facial recognition, quality control, and augmented reality. Key challenges include handling lighting variations, occlusion (objects hidden behind others), scale differences, and the need for large labeled datasets. Computer vision has achieved superhuman performance on many tasks, becoming essential for automation and intelligent systems.";
+        if (examples.contains("object detection")) return "Object Detection is the computer vision task of identifying and locating objects within images, returning both the class (what object) and bounding box (where). Unlike image classification which labels the entire image, object detection handles multiple objects, unknown numbers of objects, and requires precise spatial localization. Popular architectures include YOLO (Real-Time Object Detection), Faster R-CNN, and SSD, each offering different trade-offs between speed and accuracy. Detection pipelines typically have two stages: (1) region proposals (identifying candidate object locations) and (2) classification and refinement (determining class and refining bounding boxes). Object detection powers practical applications: autonomous vehicles detecting pedestrians and vehicles, security systems identifying threats, retail analytics counting customers, and quality control spotting defects. Modern detectors can process images in real-time (30+ frames per second) on GPUs, enabling live video analysis. Challenges include detecting small objects, handling crowded scenes, and generalizing across different environments and lighting conditions.";
+        if (examples.contains("embeddings") || examples.contains("vector representation")) return "Embeddings are dense vector representations of words, sentences, or documents that capture semantic meaning in numerical form, enabling machines to perform mathematical operations on text. Unlike one-hot encoding (sparse vectors with mostly zeros), embeddings compress information into 100-1000 dimensions where semantically similar items are close together in space. Word embeddings like Word2Vec and GloVe embed the idea that \"king - man + woman ≈ queen\"—relationships in meaning become relationships in vector space. Sentence and document embeddings (from models like BERT or sentence transformers) extend this to longer text, useful for semantic similarity search, clustering, and classification. Embeddings are learned through unsupervised training on massive corpora, discovering that words appearing in similar contexts should have similar vectors. Applications include: semantic search (finding documents similar in meaning, not keywords), recommendation systems (products with similar embeddings are recommended together), and as inputs to downstream models. Embeddings form the foundation of modern NLP, enabling computers to reason about meaning mathematically.";
+        if (examples.contains("attention mechanism")) return "Attention Mechanism allows neural networks to focus on relevant parts of input, selectively amplifying important information while suppressing irrelevant noise—mimicking how human attention works. In sequence-to-sequence tasks (translation, summarization), attention enables the model to align source and target positions: when generating \"the\", attend to \"the\" in the source; when generating \"cat\", attend to \"cat\". Self-attention (intra-attention) lets each position attend to all other positions in the same sequence, discovering which words relate to each other. The mechanism computes attention weights (how much to focus on each input) using query-key similarity, then creates a weighted sum of values, allowing the model to dynamically allocate computation. Scaled dot-product attention is the standard: attention(Q,K,V) = softmax(QK^T/√d)V. Multi-head attention runs multiple attention operations in parallel, capturing different types of relationships. Attention replaced recurrence in sequence models, enabling parallel processing and better long-range dependencies, fundamentally enabling transformer architectures that power modern LLMs.";
+        if (examples.contains("transformers")) return "Transformers are neural network architectures based on self-attention that process entire sequences in parallel, replacing recurrent neural networks' sequential processing. A transformer stack alternates between self-attention layers (allowing each position to attend to all others) and feedforward layers, with residual connections and layer normalization stabilizing training. The encoder processes input sequences, the decoder generates output sequences one token at a time using attention to both encoder outputs (cross-attention) and previously generated tokens (causal self-attention). Transformers excel at capturing long-range dependencies because attention operates on all pairs of positions directly, unlike RNNs where information flows sequentially and long-range signals degrade. The original transformer (2017) used this architecture for machine translation; subsequent variants (BERT, GPT) adapted it for different tasks. Transformers' parallelizability (all positions process simultaneously rather than sequentially) made them trainable on massive datasets with distributed computation, leading to breakthrough models like GPT-3 and Claude. Transformers have become the default architecture for NLP and are increasingly used in vision and multimodal tasks.";
+        if (examples.contains("fine tuning") || examples.contains("fine-tuning")) return "Fine-tuning is the process of adapting a pre-trained neural network to a specific downstream task by continuing training on task-specific data with lower learning rates, leveraging the general knowledge learned from pre-training. Instead of training from random weights (expensive and data-inefficient), fine-tuning starts with a pre-trained model like BERT or GPT, removing or modifying the output layer, and training on labeled examples for the target task (sentiment analysis, named entity recognition, question answering). Fine-tuning requires far fewer examples than training from scratch: models pre-trained on billions of tokens learn general language patterns, so they need only thousands of task-specific examples to specialize. Common strategies include layer freezing (keeping early layers fixed, fine-tuning only later layers), discriminative learning rates (lower learning rates for early layers, higher for later), and adapter modules (small trainable networks injected into pre-trained models). Fine-tuning balances performance and efficiency, enabling organizations to leverage state-of-the-art models without computational budgets for pre-training, democratizing access to powerful models.";
+        if (examples.contains("nlp") || examples.contains("natural language processing")) return "Natural Language Processing (NLP) is the field of artificial intelligence focused on enabling computers to understand, interpret, and generate human language in meaningful and useful ways. Core NLP tasks include tokenization (breaking text into words), part-of-speech tagging (identifying nouns, verbs, etc.), named entity recognition (finding names and locations), dependency parsing (understanding grammatical relationships), and machine translation (translating between languages). Modern NLP is dominated by neural approaches, especially transformers like BERT and GPT, which learn language representations from massive text corpora. Practical NLP applications include machine translation (Google Translate), question answering (Siri, Alexa), sentiment analysis (customer feedback), information extraction (mining facts from documents), and dialogue systems (chatbots). NLP challenges include ambiguity (\"bank\" could be financial or river), context dependence (meaning depends on surrounding text), and cultural/linguistic variation (same idea expressed differently). NLP powers many AI products users interact with daily, from predictive text on phones to recommendation systems, making it one of the most impactful AI fields.";
+
+        return "This concept is fundamental in " + topicName + ". It teaches important principles about how systems work, interact, and solve real-world problems. Understanding this deeply will improve your technical knowledge significantly. Practice with examples and real-world applications.";
+    }
+
+    private String generateExternalLink(String domain, String topicName) {
+        String topic = topicName.toLowerCase().replace(" ", "-");
+        String domainLower = domain.toLowerCase().replace(" ", "-");
+
+        // Generate relevant Wikipedia or educational URLs based on domain and topic
+        if (domain.contains("DSA") || domain.contains("Data")) {
+            if (topicName.contains("Array")) return "https://en.wikipedia.org/wiki/Array_(data_structure)";
+            if (topicName.contains("Linked List")) return "https://en.wikipedia.org/wiki/Linked_list";
+            if (topicName.contains("Stack")) return "https://en.wikipedia.org/wiki/Stack_(abstract_data_type)";
+            if (topicName.contains("Queue")) return "https://en.wikipedia.org/wiki/Queue_(abstract_data_type)";
+            if (topicName.contains("Tree")) return "https://en.wikipedia.org/wiki/Tree_(data_structure)";
+            if (topicName.contains("Binary Search")) return "https://en.wikipedia.org/wiki/Binary_search_algorithm";
+            if (topicName.contains("Sorting")) return "https://en.wikipedia.org/wiki/Sorting_algorithm";
+            if (topicName.contains("Dynamic Programming")) return "https://en.wikipedia.org/wiki/Dynamic_programming";
+            if (topicName.contains("Graph")) return "https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)";
+            if (topicName.contains("Big O")) return "https://en.wikipedia.org/wiki/Big_O_notation";
+        }
+        if (domain.contains("Machine Learning") || domain.contains("Artificial Intelligence")) {
+            if (topicName.contains("Supervised")) return "https://en.wikipedia.org/wiki/Supervised_learning";
+            if (topicName.contains("Unsupervised")) return "https://en.wikipedia.org/wiki/Unsupervised_learning";
+            if (topicName.contains("Neural")) return "https://en.wikipedia.org/wiki/Artificial_neural_network";
+            if (topicName.contains("Linear Regression")) return "https://en.wikipedia.org/wiki/Linear_regression";
+            return "https://en.wikipedia.org/wiki/Machine_learning";
+        }
+        if (domain.contains("Web Development")) {
+            if (topicName.contains("HTML")) return "https://developer.mozilla.org/en-US/docs/Web/HTML";
+            if (topicName.contains("Flexbox")) return "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox";
+            if (topicName.contains("Grid")) return "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Grids";
+            if (topicName.contains("Responsive")) return "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design";
+            if (topicName.contains("JavaScript")) return "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide";
+            if (topicName.contains("DOM")) return "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model";
+            if (topicName.contains("Event Loop")) return "https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop";
+            if (topicName.contains("Promise")) return "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise";
+            if (topicName.contains("Fetch")) return "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API";
+            return "https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web";
+        }
+        if (domain.contains("Cloud")) {
+            return "https://en.wikipedia.org/wiki/Cloud_computing";
+        }
+        if (domain.contains("Security") || domain.contains("Cybersecurity")) {
+            return "https://en.wikipedia.org/wiki/Cybersecurity";
+        }
+        if (domain.contains("DevOps")) {
+            return "https://en.wikipedia.org/wiki/DevOps";
+        }
+        if (domain.contains("Database")) {
+            return "https://en.wikipedia.org/wiki/Database";
+        }
+        if (domain.contains("System Design")) {
+            return "https://en.wikipedia.org/wiki/Systems_design";
+        }
+
+        // Default fallback
+        return "https://en.wikipedia.org/wiki/" + topicName.replace(" ", "_");
+    }
+}
